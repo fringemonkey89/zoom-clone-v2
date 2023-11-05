@@ -8,8 +8,10 @@ const PORT = 3000;
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
+
 app.get('/', (req, res) => {
-    res.redirect(`/${uuidV4}`)
+
+    res.redirect(`/${uuidV4()}`)
 })
 
 app.get('/:room', (req, res) => {
@@ -20,7 +22,7 @@ io.on('connection', socket =>{
     socket.on('join-room', (roomId, userId) =>{
         console.log(roomId, userId)
         socket.join(roomId)
-        socket.to(roomId).boradcast.emit('user-connected', userId )
+        socket.to(roomId).broadcast.emit('user-connected', userId )
 
         socket.on('disconnect', () =>{
             socket.to(roomId).broadcast.emit('user-disconnected', userId)

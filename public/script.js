@@ -22,6 +22,7 @@ navigator.mediaDevices.getUserMedia({
 })
 
 socket.on('user-connected', userId => {
+    console.log('user connected' + userId)
       connectToNewUser(userId, stream)  
     })
 
