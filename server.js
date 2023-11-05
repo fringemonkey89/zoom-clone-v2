@@ -3,7 +3,7 @@ const app = express();
 const server = require('http').Server(app);
 const io  = require('socket.io')(server)
 const { v4: uuidV4} = require('uuid')
-
+const PORT = 3000;
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
@@ -21,6 +21,12 @@ io.on('connection', socket =>{
         console.log(roomId, userId)
         socket.join(roomId)
         socket.to(roomId).boradcast.emit('user-connected', userId )
+
+        socket.on('disconnect', () =>{
+            socket.to(roomId).broadcast.emit('user-disconnected', userId)
+        })
     })
 })
-server.listen(3000);
+server.listen(PORT, () => {
+    console.log(`server is listening to port: ${PORT}`)
+});
